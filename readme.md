@@ -1,15 +1,17 @@
 # Spotify Favourites
 
-This is a small web app that I built in attempt to get a better grasp of the OAuth2.0 process, to play around with the Spotify API, and to implement TailwindCSS.
+This is a small web app I am building in attempt to understand the OAuth2.0 process, use the Spotify API, and to better grasp the MVC framework of Laravel.
 
-The app has a simple landing page that will prompt you to login with your Spotify account. After doing so, it will proceed to show you your top tracks and artists.
+The landing page will prompt the user to login with their Spotify account. After, it will display the Favorites of the Month playlist that is curated by me and my friends.
 
-It will also show you a profile of the song if you choose top tracks.
+The web-app will allow users to vote on tracks and leave comments, while sending push notifications when the playlist is updated and user feedback is left.
 
-## Installation
+This is meant to extend and enrich the Spotify experience.
+
+<!-- ## Installation
 
 <ol>
 	<li>Clone this to your local machine</li>
 	<li>Run `composer install` and setup your `.env` file (ensure you Spotify redirect URI matches that in your routes file)</li>
 	<li>That's it, you're good to go!</li>
-</ol>
+</ol> -->
