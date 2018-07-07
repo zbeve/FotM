@@ -1,4 +1,4 @@
-# Spotify Favourites
+# Spotify Favorites of the Month
 
 This is a small web app I am building in attempt to understand the OAuth2.0 process, use the Spotify API, and to better grasp the MVC framework of Laravel.
 
