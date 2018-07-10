@@ -13,8 +13,8 @@
 
 Route::get('/','AuthenticateSpotifyController@checkLogin');
 
-// Route::get('/login', function() {
-//   return view('layouts.login');
+// Route::get('/home', function() {
+//   return view('layouts.home');
 // });
 
 Route::get('/callback', 'AuthenticateSpotifyController@spotifyCallback');

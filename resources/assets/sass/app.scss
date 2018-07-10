@@ -1,14 +1,84 @@
 
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+$roboto: 'Roboto', sans-serif;
 
-// Variables
-@import "variables";
+// Colors
+$white: #FFFFFF;
+$grey: #C5C3C6;
+$black: #191414;
+$blue: #4C5C68;
+$green: #1DB954;
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+html, body {
+  margin: 0;
+  height: 100%;
+  background-color: $black;
+}
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: $black;
+  margin: auto;
+}
+
+#main-card {
+  margin-top: 2%;
+  background-color: $grey;
+  .img-container {
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    overflow: hidden;
+    img {
+      flex-shrink: 0;
+      min-width: 100%;
+      min-height: 100%;
+    }
+  }
+  .card-body {
+    h5 {
+      color: $green;
+    }
+    .card-text {
+      color: $black;
+      .text-muted {
+        color: $blue !important;
+      }
+    }
+  }
+}
+
+#login {
+  // margin: auto;
+  margin-top: 30%;
+  width: 100%;
+  padding: 10px;
+  .col-lg-12 {
+    h1 {
+      font-family: $roboto;
+      font-weight: 400;
+      font-size: 10em;
+      text-transform: uppercase;
+      color: $white;
+    }
+    .btn {
+      // background-color: $green;
+      margin: auto;
+      margin-top: 50px;
+      padding: 30px;
+      width: 40%;
+      border: 5px solid $green;
+      font-family: $roboto;
+      font-size: 4em;
+      text-transform: uppercase;
+      color: $green;
+      transition: color 0.5s, background-color 0.5s;
+    }
+    .btn:hover {
+      color: black;
+      background-color: $green;
+    }
+  }
 }

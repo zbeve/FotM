@@ -13,15 +13,13 @@ class RetrieveStatsController extends Controller
     {
       $client = new Client();
         try {
-            $response = $client->get("https://api.spotify.com/v1/me/playlists", [
+            $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/2KFfK5Qnxul570CykzM912", [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . session('spotify_token'),
                 ],
             ]);
-
-            // dd($reponse);
-            return response()->json(json_decode($response->getBody())->items);
+            return response()->json(json_decode($response->getBody()));
         } catch (\Exception $e) {
 
             $refreshToken = $client->post('https://accounts.spotify.com/api/token', [
@@ -42,23 +40,21 @@ class RetrieveStatsController extends Controller
                 session(['spotify_refresh' => $refreshToken->refresh_token]);
             }
 
-            $response = $client->get("https://api.spotify.com/v1/me/playlists", [
+            $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/2KFfK5Qnxul570CykzM912", [
                 'headers' => [
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . session('spotify_token'),
                 ],
             ]);
-            // dd($response);
-            return response()->json(json_decode($response->getBody())->items);
+            return response()->json(json_decode($response->getBody()));
         }
     }
 
     public function viewStats()
     {
-        $test = $this->retrieveData();
-        dd($test);
+        $data = $this->retrieveData();
         if (session()->has('spotify_token')) {
-            return view('layouts.home');
+            return view('layouts.home')->with('data', $data->original);
         }
 
         return redirect('/login/spotify');
