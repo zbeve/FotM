@@ -8,49 +8,37 @@ Home
 
 @section('content')
 
-
-<div id="main-card" class="card mb-3">
-  <div class="img-container">
-    <img class="card-img-top" src="{{ $data->images[0]->url }}" alt="Card image cap">
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">{!! $data->name !!}</h5>
-    <p class="card-text">{!! $data->description !!}</p>
-    <p class="card-text"><small class="text-muted">{{ $data->tracks->total }} Tracks - {{ $data->followers->total }} Followers</small></p>
-    <a href="#" class="btn btn-primary">View on Spotify</a>
-  </div>
-</div>
-
-
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+<div id="playlistCarousel" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img class="d-block w-100" src="http://placehold.it/900x350" alt="First slide">
+      <a href="/playlist"><img class="d-block w-100" src="{{ $data->items[0]->images[0]->url }}" alt="First slide"></a>
       <div class="carousel-caption d-none d-md-block">
-        <h5>Group - FotM [June]</h5>
-        <p>A discovery playlist. No theme, no judgment, just your favorites that you're listening to at the moment.</p>
+        <h5>{{ $data->items[0]->name }}</h5>
       </div>
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" src="http://placehold.it/900x350" alt="Second slide">
+      <img class="d-block w-100" src="{{ $data->items[1]->images[0]->url }}" alt="Second slide">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Group - FotM [May]</h5>
-        <p>A discovery playlist. No theme, no judgment, just your favorites that you're listening to at the moment.</p>
+        <h5>{{ $data->items[1]->name }}</h5>
       </div>
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" src="http://placehold.it/900x350" alt="Third slide">
+      <img class="d-block w-100" src="{{ $data->items[2]->images[0]->url }}" alt="Third slide">
       <div class="carousel-caption d-none d-md-block">
-        <h5>Group - FotM [April]</h5>
-        <p>A discovery playlist. No theme, no judgment, just your favorites that you're listening to at the moment.</p>
+        <h5>{{ $data->items[2]->name }}</h5>
       </div>
     </div>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+  <a class="carousel-control-prev" href="#playlistCarousel" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+  <a class="carousel-control-next" href="#playlistCarousel" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>

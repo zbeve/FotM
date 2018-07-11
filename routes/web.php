@@ -21,4 +21,5 @@ Route::get('/callback', 'AuthenticateSpotifyController@spotifyCallback');
 // Route::get('/denied', 'AuthenticateSpotifyController@denied');
 // Route::get('/login/refresh', 'AuthenticateSpotifyController@spotifyRefresh');
 
-Route::get('/home', 'RetrieveStatsController@viewStats');
+Route::get('/home', 'RetrieveStatsController@viewPlaylists');
+Route::get('/playlist', 'RetrieveStatsController@viewCurrentMonth');
