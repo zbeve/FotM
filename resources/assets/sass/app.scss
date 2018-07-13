@@ -47,18 +47,89 @@ html, body {
   }
 }
 
+#main-nav {
+  background-color: $grey !important;
+  .nav-item {
+      a {
+        text-transform: uppercase;
+        color: $blue !important;
+      }
+    .navbar-brand {
+      margin-left: 10px !important;
+      margin-right: 10px !important;
+
+    }
+  }
+}
+
 #playlist {
-  #song {
+  margin-top: 5%;
+  margin-bottom: 8%;
+  #headers {
+    background-color: $black;
+    color: $white;
+    h5{
+      font-style: $roboto;
+      font-weight: 100;
+      text-transform: uppercase;
+      font-kerning: auto;
+    }
+  }
+  .active {
+    background-color: $blue !important;
+  }
+  .song {
+    border-color: rgba(255, 255, 255, 0.15);
+    background-color: $black;
+    color: $white;
     .d-flex {
+      font-style: $roboto;
+      font-weight: 200;
       div {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         .badge {
-          background-color: $green;
+          background-color: $blue;
         }
       }
     }
+  }
+}
+
+#mvp-container {
+  margin-top: 17% !important;
+  .card {
+    background-color: $black;
+    color: $white;
+    .col-5 {
+      img {
+        width: 100%;
+        border: 2px solid $grey;
+      }
+    }
+    .header {
+      color: $white;
+    }
+    .card-body {
+      text-align: center;
+      .btn {
+        width: 25%;
+      }
+    }
+    .list-group {
+      .list-group-item { text-align: center;
+        background-color: $black;
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+}
+
+#player-bg {
+  background-color: $black !important;
+  #player {
+    width: 100%;
   }
 }
 

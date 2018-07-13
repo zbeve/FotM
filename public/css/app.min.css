@@ -47,14 +47,101 @@ body {
   color: #4C5C68 !important;
 }
 
-#playlist #song .d-flex div {
+#main-nav {
+  background-color: #C5C3C6 !important;
+}
+
+#main-nav .nav-item a {
+  text-transform: uppercase;
+  color: #4C5C68 !important;
+}
+
+#main-nav .nav-item .navbar-brand {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
+#playlist {
+  margin-top: 5%;
+  margin-bottom: 8%;
+}
+
+#playlist #headers {
+  background-color: #191414;
+  color: #FFFFFF;
+}
+
+#playlist #headers h5 {
+  font-style: "Roboto", sans-serif;
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-font-kerning: auto;
+          font-kerning: auto;
+}
+
+#playlist .active {
+  background-color: #4C5C68 !important;
+}
+
+#playlist .song {
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: #191414;
+  color: #FFFFFF;
+}
+
+#playlist .song .d-flex {
+  font-style: "Roboto", sans-serif;
+  font-weight: 200;
+}
+
+#playlist .song .d-flex div {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-#playlist #song .d-flex div .badge {
-  background-color: #1DB954;
+#playlist .song .d-flex div .badge {
+  background-color: #4C5C68;
+}
+
+#mvp-container {
+  margin-top: 17% !important;
+}
+
+#mvp-container .card {
+  background-color: #191414;
+  color: #FFFFFF;
+}
+
+#mvp-container .card .col-5 img {
+  width: 100%;
+  border: 2px solid #C5C3C6;
+}
+
+#mvp-container .card .header {
+  color: #FFFFFF;
+}
+
+#mvp-container .card .card-body {
+  text-align: center;
+}
+
+#mvp-container .card .card-body .btn {
+  width: 25%;
+}
+
+#mvp-container .card .list-group .list-group-item {
+  text-align: center;
+  background-color: #191414;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+#player-bg {
+  background-color: #191414 !important;
+}
+
+#player-bg #player {
+  width: 100%;
 }
 
 #login {
