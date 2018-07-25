@@ -1,17 +1,16 @@
-# Spotify Favorites of the Month
+# Spotify - Favorites of the Month
 
-This is a small web app I am building in attempt to understand the OAuth2.0 process, use the Spotify API, and to better grasp the MVC framework of Laravel.
+This is a small web app I am developing to better my understanding as Laravel as a framework and work with dependencies that are unfamiliar to me.
 
-The landing page will prompt the user to login with their Spotify account. After, it will display the Favorites of the Month playlist that is curated by me and my friends.
+Everything is being developed in attempt to follow best practices for PHP development and overall Laravel structure.
 
-The web-app will allow users to vote on tracks and leave comments, while sending push notifications when the playlist is updated and user feedback is left.
+This web app is meant to extend and enrich the stock Spotify experience for the users of the FotM playlist.
 
-This is meant to extend and enrich the Spotify experience.
-
-<!-- ## Installation
+## The app includes the following dependencies:
 
 <ol>
-	<li>Clone this to your local machine</li>
-	<li>Run `composer install` and setup your `.env` file (ensure you Spotify redirect URI matches that in your routes file)</li>
-	<li>That's it, you're good to go!</li>
-</ol> -->
+	<li>OAuth2</li>
+	<li>Spotify API</li>
+	<li>Google Firebase GCM Protocol</li>
+  <li>Scheduled Cron commands</li>
+</ol>
