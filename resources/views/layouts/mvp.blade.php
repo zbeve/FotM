@@ -9,8 +9,7 @@ MVP
 @section('content')
 
 <div id="mvp-container" class="row">
-  <div class="col"></div>
-  <div class="col-8">
+  <div class="col-xl-auto">
     <div class="card">
       <div class="row">
         <div class="col-1"></div>
@@ -29,27 +28,27 @@ MVP
           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img class="d-block w-100" src="{{ $song[0]->image_url }}" alt="First slide">
+                <a href="{{ $song[0]->spotify_url }}"><img class="d-block w-100" src="{{ $song[0]->image_url }}" alt="First slide"></a>
                 <h5 class="text-center">{{ $song[0]->title }}</h5>
                 <p class="text-center">{{ $song[0]->artist }} | {{ $song[0]->album }}</p>
               </div>
               <div class="carousel-item">
-                <img class="d-block w-100" src="{{ $song[1]->image_url }}" alt="Second slide">
+                <a href="{{ $song[1]->spotify_url }}"><img class="d-block w-100" src="{{ $song[1]->image_url }}" alt="Second slide"></a>
                 <h5 class="text-center">{{ $song[1]->title }}</h5>
                 <p class="text-center">{{ $song[1]->artist }} | {{ $song[1]->album }}</p>
               </div>
               <div class="carousel-item">
-                <img class="d-block w-100" src="{{ $song[2]->image_url }}" alt="Third slide">
+                <a href="{{ $song[2]->spotify_url }}"><img class="d-block w-100" src="{{ $song[2]->image_url }}" alt="Third slide"></a>
                 <h5 class="text-center">{{ $song[2]->title }}</h5>
                 <p class="text-center">{{ $song[2]->artist }} | {{ $song[2]->album }}</p>
               </div>
               <div class="carousel-item">
-                <img class="d-block w-100" src="{{ $song[3]->image_url }}" alt="Fourth slide">
+                <a href="{{ $song[3]->spotify_url }}"><img class="d-block w-100" src="{{ $song[3]->image_url }}" alt="Fourth slide"></a>
                 <h5 class="text-center">{{ $song[3]->title }}</h5>
                 <p class="text-center">{{ $song[3]->artist }} | {{ $song[3]->album }}</p>
               </div>
               <div class="carousel-item">
-                <img class="d-block w-100" src="{{ $song[4]->image_url }}" alt="Fifth slide">
+                <a href="{{ $song[4]->spotify_url }}"><img class="d-block w-100" src="{{ $song[4]->image_url }}" alt="Fifth slide"></a>
                 <h5 class="text-center">{{ $song[4]->title }}</h5>
                 <p class="text-center">{{ $song[4]->artist }} | {{ $song[4]->album }}</p>
               </div>
@@ -67,11 +66,11 @@ MVP
         </div>
       </div>
       <div class="card-body">
-        <h5 class="card-title">@if($data->display_name != null){{ $data->display_name }}@else{{$data->id}}@endif | Current MVP</h5>
+        <h5 class="card-title">@if($data->display_name != null){{ $data->display_name }}@else{{ $data->id }}@endif | Current MVP</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">Contributed 420 Songs</li>
-        <li class="list-group-item">Recieved 69 Likes</li>
+        <li class="list-group-item">Contributed {{ $user->track_count }} Songs</li>
+        <li class="list-group-item">Recieved {{ $user->like_count }} Likes</li>
         <li class="list-group-item">{{ $data->followers->total }} Followers</li>
       </ul>
       <div class="card-body">
@@ -79,7 +78,6 @@ MVP
       </div>
     </div>
   </div>
-  <div class="col"></div>
 </div>
 
 

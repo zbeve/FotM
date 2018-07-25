@@ -19,52 +19,83 @@ html, body {
   background-color: $black;
 }
 
-#main-card {
-  margin-top: 2%;
-  background-color: $grey;
-  .img-container {
-    height: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    overflow: hidden;
-    img {
-      flex-shrink: 0;
-      min-width: 100%;
-      min-height: 100%;
-    }
-  }
-  .card-body {
-    h5 {
-      color: $green;
-    }
-    .card-text {
-      color: $black;
-      .text-muted {
-        color: $blue !important;
+// #main-card {
+//   margin-top: 2%;
+//   background-color: $grey;
+//   .img-container {
+//     height: 30%;
+//     display: flex;
+//     justify-content: center;
+//     align-items: baseline;
+//     overflow: hidden;
+//     img {
+//       flex-shrink: 0;
+//       min-width: 100%;
+//       min-height: 100%;
+//     }
+//   }
+//   .card-body {
+//     h5 {
+//       color: $green;
+//     }
+//     .card-text {
+//       color: $black;
+//       .text-muted {
+//         color: $blue !important;
+//       }
+//     }
+//   }
+// }
+
+#home-carousel {
+  padding-top: 20%;
+  margin: 0;
+  height: auto;
+  width: 100%;
+  .carousel {
+    width: 100%;
+  .carousel-inner {
+    // height: 100%;
+    // width: 100%;
+    .carousel-item {
+      // height: 100%;
+      // width: 100%;
+      img {
+        // height: 100%;
+          // width: 100%;
+        }
       }
     }
   }
 }
 
-#main-nav {
+#topnav {
   background-color: $grey !important;
-  .nav-item {
-      a {
-        text-transform: uppercase;
-        color: $blue !important;
+  .collapse {
+    .navbar-nav {
+      width: 100%;
+      .outer {
+        margin: auto;
       }
-    .navbar-brand {
-      margin-left: 10px !important;
-      margin-right: 10px !important;
-
+      .nav-item {
+        a {
+          color: $black !important;
+          font-family: $roboto !important;
+        }
+        .active {
+          color: $blue !important;
+        }
+        .navbar-brand {
+          margin: 0;
+        }
+      }
     }
   }
 }
 
 #playlist {
-  margin-top: 5%;
-  margin-bottom: 8%;
+  padding-top: 20%;
+  padding-bottom: 20%;
   #headers {
     background-color: $black;
     color: $white;
@@ -89,9 +120,13 @@ html, body {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        .badge {
-          background-color: $blue;
-        }
+        // .badge {
+        //   background-color: $blue;
+        // }
+      }
+      .details {
+        font-size: .7em;
+        color: $grey;
       }
     }
   }
@@ -107,18 +142,28 @@ html, body {
         width: 100%;
         border: 2px solid $grey;
       }
+      .carousel-inner {
+        h5 {
+          padding-top: 10px;
+        }
+        .text-center {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: .5em;
+        }
+      }
     }
     .header {
+      font-size: .5em;
       color: $white;
     }
     .card-body {
       text-align: center;
-      .btn {
-        width: 25%;
-      }
     }
     .list-group {
-      .list-group-item { text-align: center;
+      .list-group-item {
+        text-align: center;
         background-color: $black;
         border-color: rgba(255, 255, 255, 0.15);
       }

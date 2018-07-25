@@ -26,4 +26,5 @@ Route::get('/playlist', 'RetrieveStatsController@viewCurrentMonth');
 Route::get('/mvp', 'RetrieveStatsController@returnMVP');
 
 Route::post('/playlist/ajax/like', 'RetrieveStatsController@post');
-Route::get('/playlist/ajax/like', 'RetrieveStatsController@get');
+Route::post('/home/notify', 'RetrieveStatsController@post');
+// Route::get('/playlist/ajax/like', 'RetrieveStatsController@get');

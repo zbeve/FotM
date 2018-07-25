@@ -11,62 +11,43 @@ use App\Models\Current;
 class RetrieveStatsController extends Controller
 {
     public function post(Request $request) {
+      // dd($request);
+      $user = $this->retrieveRecentlyPlayed()['user_id'];
       $action = $request->action;
       if (request()->ajax()) {
         switch($action) {
           case 'like':
-            return RetrieveStatsController::updateLikes($request->title);
+            return RetrieveStatsController::updateLikes($request->title, $user);
             break;
         }
       }
     }
 
-    public function updateLikes($title) {
-      DB::table('current')->where('title', $title)
-      ->increment('likes', 1);
-
-      $likes = DB::table('current')->where('title', $title)
-      ->pluck('likes');
-
-      return response($likes[0]);
+    public function updateLikes($title, $user) {
+      DB::table('current')->where('title', $title)->increment('likes', 1, ['liked_by' => $user]);
+      // $likes = DB::table('current')->where('title', $title)->pluck('likes');
+      // return response($likes[0]);
     }
 
     public function loadHome() {
         $data = $this->retrievePlaylists();
         $music = $this->retrieveRecentlyPlayed();
-        $id = $this->parsename($music->original->items[0]->context->href);
-        $this->getUserTotals($id);
-        if (DB::table('recently_played')->where('user', $id)->get()->count() == 0) {
-          DB::table('users')->insert([
-            'spotify_id' => $id,
-            'like_count' => $like_count,
-            'track_count' => $track_count,
-          ]);
-          for ($i = 0; $i < 5; $i++) {
-            DB::table('recently_played')->insert([
-              'title' => $music->original->items[$i]->track->name,
-              'artist' => $music->original->items[$i]->track->artists[0]->name,
-              'album' => $music->original->items[$i]->track->album->name,
-              'user' => $id,
-              'preview_url' => $music->original->items[$i]->track->preview_url,
-              'image_url' => $music->original->items[$i]->track->album->images[0]->url,
-            ]);
-          }
-        }
-        else {
-          DB::table('recently_played')->where('user', $id)->delete();
-          for ($i = 0; $i < 5; $i++) {
-            DB::table('recently_played')->insert([
-              'title' => $music->original->items[$i]->track->name,
-              'artist' => $music->original->items[$i]->track->artists[0]->name,
-              'album' => $music->original->items[$i]->track->album->name,
-              'user' => $id,
-              'preview_url' => $music->original->items[$i]->track->preview_url,
-              'image_url' => $music->original->items[$i]->track->album->images[0]->url,
-            ]);
-          }
-        }
+        $this->getUserTotals($music['user_id']);
 
+        if (DB::table('recently_played')->where('user', $music['user_id'])->get()->count() != 0) {
+          DB::table('recently_played')->where('user', $music['user_id'])->delete();
+        }
+        for ($i = 0; $i < 5; $i++) {
+          DB::table('recently_played')->insert([
+            'title' => $music['recents']->items[$i]->track->name,
+            'artist' => $music['recents']->items[$i]->track->artists[0]->name,
+            'album' => $music['recents']->items[$i]->track->album->name,
+            'user' => $music['user_id'],
+            'preview_url' => $music['recents']->items[$i]->track->preview_url,
+            'spotify_url' => $music['recents']->items[$i]->track->external_urls->spotify,
+            'image_url' => $music['recents']->items[$i]->track->album->images[0]->url,
+          ]);
+        }
         if (session()->has('spotify_token')) {
             return view('layouts.home')->with('data', $data->original);
         }
@@ -77,7 +58,6 @@ class RetrieveStatsController extends Controller
     public function retrievePlaylists() {
       $client = new Client();
       try {
-        // NEEDS TO BE UPDATED FROM STATIC
           $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists", [
               'headers' => [
                   'Accept' => 'application/json',
@@ -223,17 +203,21 @@ class RetrieveStatsController extends Controller
                 array_push($data->original->items, $extra);
               $offset + 100;
             }
-            // need handling for delete?
-            for ($i = Current::count(); $i < count($data->original->items); $i++) {
-              DB::table('current')->insert([
-                'title' => $data->original->items[$i]->track->name,
-                'artist' => $data->original->items[$i]->track->artists[0]->name,
-                'album' => $data->original->items[$i]->track->album->name,
-                'user' => $this->returnUserName($data->original->items[$i]->added_by->href),
-                'spotify_id' => $data->original->items[$i]->added_by->id,
-                'likes' => 0,
-                'preview_url' => $data->original->items[$i]->track->preview_url,
-              ]);
+            $last_entry = DB::table('current')->orderBy('date_added', 'desc')->first();
+            $count = DB::table('current')->count();
+            // dd($last_entry->date_added);
+            for ($i = 0; $i < count($data->original->items); $i++) {
+              if ($count == 0 || strtotime($data->original->items[$i]->added_at) > strtotime($last_entry->date_added)) {
+                DB::table('current')->insert([
+                  'title' => $data->original->items[$i]->track->name,
+                  'artist' => $data->original->items[$i]->track->artists[0]->name,
+                  'album' => $data->original->items[$i]->track->album->name,
+                  'user' => $this->returnUserName($data->original->items[$i]->added_by->href),
+                  'spotify_id' => $data->original->items[$i]->added_by->id,
+                  'likes' => 0,
+                  'preview_url' => $data->original->items[$i]->track->preview_url,
+                ]);
+              }
             }
           }
           $playlistData = DB::table('current')->get()->toArray();
@@ -243,14 +227,18 @@ class RetrieveStatsController extends Controller
     public function retrieveRecentlyPlayed() {
       $client = new Client();
       try {
-        // NEEDS TO BE UPDATED FROM STATIC
+          $user = $client->get("https://api.spotify.com/v1/me", [
+              'headers' => [
+                  'Accept' => 'application/json',
+                  'Authorization' => 'Bearer ' . session('spotify_token'),
+              ],
+          ]);
           $response = $client->get("https://api.spotify.com/v1/me/player/recently-played", [
               'headers' => [
                   'Accept' => 'application/json',
                   'Authorization' => 'Bearer ' . session('spotify_token'),
               ],
           ]);
-          return response()->json(json_decode($response->getBody()));
       }
       catch (\Exception $e) {
 
@@ -271,26 +259,35 @@ class RetrieveStatsController extends Controller
           if (isset($refreshToken->refresh_token)) {
               session(['spotify_refresh' => $refreshToken->refresh_token]);
           }
-
+          $user = $client->get("https://api.spotify.com/v1/me", [
+              'headers' => [
+                  'Accept' => 'application/json',
+                  'Authorization' => 'Bearer ' . session('spotify_token'),
+              ],
+          ]);
           $response = $client->get("https://api.spotify.com/v1/me/player/recently-played", [
               'headers' => [
                   'Accept' => 'application/json',
                   'Authorization' => 'Bearer ' . session('spotify_token'),
               ],
           ]);
-          return response()->json(json_decode($response->getBody()));
       }
-    }
+      $user = response()->json(json_decode($user->getBody()));
+      $recently_played = response()->json(json_decode($response->getBody()));
 
-    public function parseName($href) {
-      $userID = basename(dirname(pathinfo(parse_url($href)["path"])["dirname"]));
-      return $userID;
+      $data = ([
+        'user_id' => $user->original->id,
+        'recents' => $recently_played->original,
+      ]);
+
+      return $data;
     }
 
     public function getUserTotals($id) {
       $likes = DB::table('current')->where('spotify_id', $id)->sum('likes');
       $songs = DB::table('current')->where('spotify_id', $id)->count();
       $date = date('m/d/y');
+
       if (DB::table('users')->where('spotify_id', $id)->first() != null) {
         DB::table('users')->where('spotify_id', $id)->update([
           'like_count' => $likes,
@@ -319,7 +316,8 @@ class RetrieveStatsController extends Controller
     public function returnMVP() {
       $data = $this->retrieveMVP();
       $recents = DB::table('recently_played')->where('user', $data->original->id)->get();
-      return view('layouts.mvp')->with('data', $data->original)->with('song', $recents);
+      $user = DB::table('users')->where('spotify_id', $data->original->id)->first();
+      return view('layouts.mvp')->with('data', $data->original)->with('song', $recents)->with('user', $user);
     }
 
     public function returnUserName($userHref) {

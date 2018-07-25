@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Current extends Model {
 
-  // public $timestamps = false;
 	protected $table = 'current';
-	protected $fillable = ['title', 'artist','album', 'user', 'likes'];
+	protected $fillable = ['title', 'artist','album', 'user', 'likes', 'liked_by', 'preview_url'];
+	
 }
