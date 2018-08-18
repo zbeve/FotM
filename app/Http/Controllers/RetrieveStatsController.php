@@ -10,8 +10,8 @@ use App\Models\Current;
 
 class RetrieveStatsController extends Controller
 {
+
     public function post(Request $request) {
-      // dd($request);
       $user = $this->retrieveRecentlyPlayed()['user_id'];
       $action = $request->action;
       if (request()->ajax()) {
@@ -30,13 +30,30 @@ class RetrieveStatsController extends Controller
     }
 
     public function loadHome() {
-        $data = $this->retrievePlaylists();
         $music = $this->retrieveRecentlyPlayed();
         $this->getUserTotals($music['user_id']);
+
+        if($music['user_id'] == "zbeve") {
+          $data = $this->retrievePlaylists()->original;
+          DB::table('playlists')->truncate();
+          for ($i = 0; $i < 5; $i++) {
+            DB::table('playlists')->insert([
+              'name' => $data->items[$i]->name,
+              'image' => $data->items[$i]->images[0]->url,
+              'link' => $data->items[$i]->external_urls->spotify,
+            ]);
+          }
+          DB::table('current_key')->insert([
+            'playlist_id' => $data->items[0]->id,
+            'month' => rtrim(explode("[", $data->items[0]->name)[1], "]")
+          ]);
+        }
+        $playlists = DB::table('playlists')->get();
 
         if (DB::table('recently_played')->where('user', $music['user_id'])->get()->count() != 0) {
           DB::table('recently_played')->where('user', $music['user_id'])->delete();
         }
+
         for ($i = 0; $i < 5; $i++) {
           DB::table('recently_played')->insert([
             'title' => $music['recents']->items[$i]->track->name,
@@ -48,8 +65,9 @@ class RetrieveStatsController extends Controller
             'image_url' => $music['recents']->items[$i]->track->album->images[0]->url,
           ]);
         }
+
         if (session()->has('spotify_token')) {
-            return view('layouts.home')->with('data', $data->original);
+            return view('layouts.home')->with('data', $playlists);
         }
         return view('layouts.login');
     }
@@ -156,10 +174,11 @@ class RetrieveStatsController extends Controller
 
 // RETIRVE RELEVANT PLAYLIST INFORMATION
     public function retrieveData() {
+      $current_playlist_key = DB::table('current_key')->where('month', date('F'))->pluck('playlist_id');
       $client = new Client();
         try {
           // NEEDS TO BE UPDATED TO PULL FROM DATABASE
-          $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/2KFfK5Qnxul570CykzM912/tracks?offset=0", [
+          $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/$current_playlist_key[0]/tracks?offset=0", [
               'headers' => [
                   'Accept' => 'application/json',
                   'Authorization' => 'Bearer ' . session('spotify_token'),
@@ -180,7 +199,7 @@ class RetrieveStatsController extends Controller
               if (isset($refreshToken->refresh_token)) {
                   session(['spotify_refresh' => $refreshToken->refresh_token]);
               }
-              $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/2KFfK5Qnxul570CykzM912/tracks?offset=0", [
+              $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/$current_playlist_key[0]/tracks?offset=0", [
                   'headers' => [
                       'Accept' => 'application/json',
                       'Authorization' => 'Bearer ' . session('spotify_token'),
@@ -192,7 +211,7 @@ class RetrieveStatsController extends Controller
             $offsetCount = intval(floor($data->original->total / 100));
             $offset = intval(100);
             for ($i = 0; $i < $offsetCount; $i++) {
-              $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/2KFfK5Qnxul570CykzM912/tracks?offset=$offset", [
+              $response = $client->get("https://api.spotify.com/v1/users/zbeve/playlists/$current_playlist_key[0]/tracks?offset=$offset", [
                   'headers' => [
                       'Accept' => 'application/json',
                       'Authorization' => 'Bearer ' . session('spotify_token'),
@@ -205,7 +224,6 @@ class RetrieveStatsController extends Controller
             }
             $last_entry = DB::table('current')->orderBy('date_added', 'desc')->first();
             $count = DB::table('current')->count();
-            // dd($last_entry->date_added);
             for ($i = 0; $i < count($data->original->items); $i++) {
               if ($count == 0 || strtotime($data->original->items[$i]->added_at) > strtotime($last_entry->date_added)) {
                 DB::table('current')->insert([

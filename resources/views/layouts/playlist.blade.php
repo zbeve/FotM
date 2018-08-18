@@ -37,8 +37,8 @@ Playlist
 </div>
 
 <nav id="player-bg" class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
-  <audio id="player" preload="auto" src="" autoplay controls>
-  </audio>
+  <iframe id="player" preload="auto" src="" autoplay controls>
+  </iframe>
 </nav>
 
 @endsection
